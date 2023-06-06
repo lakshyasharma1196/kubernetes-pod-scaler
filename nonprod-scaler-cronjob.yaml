@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nonprod-scaler
+spec:
+  schedule: "0 19 * * *"  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: deployment-scaler
+          containers:
+          - name: nonprod-scaler
+            image: lakshyasharma1196/scale:1.10
+            command: ["python", "scale.py", "scale-down"]
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nonprod-scaler-restore
+spec:
+  schedule: "0 7 * * *"  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: deployment-scaler
+          containers:
+          - name: nonprod-scaler-restore
+            image: lakshyasharma1196/scale:1.10
+            command: ["python", "scale.py", "scale-up"]
+          restartPolicy: OnFailure

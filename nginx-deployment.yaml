@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    environment: non-production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+      environment: non-production
+  template:
+    metadata:
+      labels:
+        app: my-app
+        environment: non-production
+    spec:
+      containers:
+      - name: my-app
+        image: nginx
+        ports:
+        - containerPort: 8080
