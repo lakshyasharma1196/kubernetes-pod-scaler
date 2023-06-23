@@ -9,4 +9,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: deployment-scaler
-  namespace: development
+  namespace: <namespace>

@@ -10,14 +10,15 @@ This script provides a solution for scaling down and scaling up Kubernetes deplo
 
 Create service account 
 
-kubectl create serviceaccount deployment-scaler -n development
+```kubectl create serviceaccount deployment-scaler -n namespace```
 
 
 1. Clone the repository and navigate to the project directory:
 
-   ```shell
+   ```
    git clone https://github.com/your-username/kubernetes-deployment-scaler.git
    cd kubernetes-deployment-scaler
+   ```
 
 2. Configure the Kubernetes cluster access. Make sure you have the necessary permissions to manage deployments and config maps in the target namespace.
 
@@ -30,22 +31,27 @@ To scale down the deployments:
 
 
 ```python scaler.py scale-down```
+
 To scale up the deployments and restore replica values from the ConfigMap:
 
-shell
-Copy code
-python scaler.py scale-up
+```python scaler.py scale-up```
+
 Check the script logs to monitor the scaling actions and any warnings or errors.
 
-How It Works
+# How It Works
+
 The script follows the following steps:
 
-Fetches the deployments in the specified namespace based on a label selector.
-For scaling down:
+1. Fetches the deployments in the specified namespace based on a label selector.
+2. For scaling down:
 Creates a ConfigMap for each deployment, storing the current replica value.
 Scales down the deployments to zero replicas.
-For scaling up:
+3. For scaling up:
 Retrieves the replica values from the ConfigMap created during the scaling down step.
-Scales up the deployments to their original replica values.
-Deletes the ConfigMap after successful scaling up.
-Make sure to adjust the label selector and any other parameters to match your deployment and namespace setup.
+4. Scales up the deployments to their original replica values.
+5. Deletes the ConfigMap after successful scaling up.
+
+Note: Make sure to adjust the label selector and any other parameters to match your deployment and namespace setup.
+
+For advanced use-case please consider the advance folder
+which contains more complex scripts for handeling hpa (scaledobject Keda) that can be used together with this one. 

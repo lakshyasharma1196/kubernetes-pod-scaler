@@ -1,0 +1,103 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: deployment-manager
+  namespace: <namepsace>
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["list", "patch", "delete"]
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: deployment-manager-binding
+  namespace: <namepsace>
+subjects:
+- kind: ServiceAccount
+  name: <serviceaccountname>  # Replace with the service account associated with your cron job
+  namespace: <namepsace>
+roleRef:
+  kind: Role
+  name: deployment-manager
+  apiGroup: rbac.authorization.k8s.io
+---
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: configmap-manager
+  namespace: <namepsace>
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create", "get", "delete"]
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: configmap-manager-binding
+  namespace: <namepsace>
+subjects:
+- kind: ServiceAccount
+  name: <serviceaccountname>  # Replace with the service account associated with your cron job
+  namespace: <namepsace>
+roleRef:
+  kind: Role
+  name: configmap-manager
+  apiGroup: rbac.authorization.k8s.io
+---
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: scaledobject-manager
+  namespace: <namepsace>
+rules:
+- apiGroups: ["keda.sh"]
+  resources: ["scaledobjects"]
+  verbs: ["get", "create", "delete"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: scaledobject-manager-binding
+  namespace: <namepsace>
+subjects:
+- kind: ServiceAccount
+  name: <serviceaccountname>  # Replace with the service account associated with your cron job
+  namespace: <namepsace>
+roleRef:
+  kind: Role
+  name: scaledobject-manager
+  apiGroup: rbac.authorization.k8s.io
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: keda-manager
+  namespace: <namepsace>
+rules:
+- apiGroups: ["keda.sh"]
+  resources: ["scaledjobs"]
+  verbs: ["get", "create", "delete"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: keda-manager-binding
+  namespace: <namepsace>
+subjects:
+- kind: ServiceAccount
+  name: <serviceaccountname>  # Replace with the service account associated with your cron job
+  namespace: <namepsace>
+roleRef:
+  kind: Role
+  name: keda-manager
+  apiGroup: rbac.authorization.k8s.io
+

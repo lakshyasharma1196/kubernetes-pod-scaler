@@ -4,18 +4,18 @@ metadata:
   name: deployment-scaler-role
 rules:
 - apiGroups: ["apps"]
-  resources: ["deployments/scale"]
-  verbs: ["patch"]
+  resources: ["deployments/scale", "deployments"] # Add "deployments" resource here
+  verbs: ["patch", "get", "list"] # Add "get" and "list" verbs
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: deployment-scaler-rolebinding
+  name: deployment-scaler-rolebinding-dev
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: deployment-scaler-role
 subjects:
 - kind: ServiceAccount
-  name: deployment-scaler
-  namespace: <namespace>
+  name: deployment-scalar-development
+  namespace: namespace
